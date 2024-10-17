@@ -100,7 +100,7 @@ include 'precision.inc'
 !$ACC     nloop,ifreq_avgsr,nsrate) async(1)
 
 !$ACC update device(x0,z0,rxbo,rzbo,sizez_x(maxzone),sizez_y(maxzone), &
-!$ACC     dx_rem,angle_rem,topo_kappa,fac_kappa, &
+!$ACC     dx_rem,angle_rem,topo_k,fac_k,phase_k,cc_max,undersea_k,us, &
 !$ACC     v_min,v_max,efoldc, &
 !$ACC     dxmin,dzmin, &
 !$ACC     prod_magma,rho_magma, &

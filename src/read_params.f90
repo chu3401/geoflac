@@ -220,7 +220,7 @@ call AdvanceToNextInputLine( 4 )
 read(4,*)  dx_rem
 ! diffusion of topography
 call AdvanceToNextInputLine( 4 )
-read(4,*)  topo_kappa, fac_kappa
+read(4,*)  topo_k, fac_k, phase_k,cc_max,undersea_k,us
 
 
 ! PROCESS CONTROL

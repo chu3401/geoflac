@@ -61,7 +61,7 @@ integer :: nx,nz,nzonx,nzony,nelz_x(maxzone),nelz_y(maxzone), &
 !$ACC     nloop,ifreq_avgsr,nsrate)
 
 real*8 :: x0,z0,rxbo,rzbo,sizez_x(maxzone),sizez_y(maxzone), &
-     dx_rem,angle_rem,topo_kappa,fac_kappa, &
+     dx_rem,angle_rem,topo_k,fac_k,phase_k,cc_max,undersea_k,us, &
      v_min,v_max,efoldc, &
      dxmin,dzmin, &
      prod_magma,rho_magma, &
@@ -90,7 +90,7 @@ real*8 :: x0,z0,rxbo,rzbo,sizez_x(maxzone),sizez_y(maxzone), &
      time,dt,time_max
 
 !$ACC declare create(x0,z0,rxbo,rzbo,sizez_x(maxzone),sizez_y(maxzone), &
-!$ACC     dx_rem,angle_rem,topo_kappa,fac_kappa, &
+!$ACC     dx_rem,angle_rem,topo_k,fac_k,phase_k,cc_max,undersea_k,us, &
 !$ACC     v_min,v_max,efoldc, &
 !$ACC     dxmin,dzmin, &
 !$ACC     prod_magma,rho_magma, &
