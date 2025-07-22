@@ -43,8 +43,8 @@ class Flac(object):
         # read record number
         tmp = np.fromfile('_contents.0', sep=' ')
         tmp.shape = (-1, 3)
-        self.frames = tmp[:,0]
-        self.steps = tmp[:,1]
+        self.frames = tmp[:,0].astype(int)
+        self.steps = tmp[:,1].astype(int)
         self.time = tmp[:,2]
         self.nrec = len(self.time)
 
@@ -190,6 +190,16 @@ class Flac(object):
         return sxz
 
 
+    def read_syy(self, frame):
+        columns = 1
+        f = open('syy.0')
+        offset = (frame-1) * columns * self.nelements * sizeoffloat
+        f.seek(offset)
+        syy = self._read_data(f, columns, count=self.nelements)
+        self._reshape_elemental_fields(syy)
+        return syy
+
+
     def read_szz(self, frame):
         columns = 1
         f = open('szz.0')
@@ -279,8 +289,8 @@ class Flac(object):
         suffix = '.%06d.0' % frame
         f2 = open('marker2' + suffix)
         dead = self._read_data(f2, count=n, dtype=np.int32)
-        tmp = self._read_data(f2, count=n, dtype=np.int32)
-        phase = self._remove_dead_markers(tmp, dead)
+        tmp = self._read_data(f2, count=n, dtype=np.int32); print(tmp)
+        phase = self._remove_dead_markers(tmp, dead);
         tmp = self._read_data(f2, count=n, dtype=np.int32)
         ntriag = self._remove_dead_markers(tmp, dead)
         f2.close()
