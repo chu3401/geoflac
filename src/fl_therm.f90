@@ -146,12 +146,11 @@ do i = 1,nx-1
     do j = 1,nz-1
 
         iph = iphase(j,i)
-        ! check fmagma
-        fmagma(j,i) = min(fmagma(j,i), fmagma_max)
+
         ! Calculating effective material properties
         cp_eff = Eff_cp( j,i )
         cond_eff = Eff_conduct( j,i )
-        
+
         ! if shearh-heating flag is true
         if( ishearh.eq.1 .and. itherm.ne.2 ) then
             dissip = shrheat(j,i)

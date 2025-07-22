@@ -35,7 +35,7 @@ close (1)
 
 ! min element width and thickness
 dxmin = minval(cord(1,2:nx,1) - cord(1,1:nx-1,1))
-dzmin = minval(cord(2,1,1:nz-1) - cord(2,1,2:nz))
+dzmin = minval(cord(1:nz-1,1,2) - cord(2:nz,1,2))
 
 open (1,file='dhacc.rs',access='direct',recl=(nx-1)*kindr)
 read (1,rec=nrec) dhacc(1:nx-1)
@@ -84,13 +84,7 @@ close (1)
 
 
 ! Check if viscous rheology present
-ivis_present = 0
-do i = 1,nx-1
-    do j = 1, nz-1
-        iph = iphase(j,i)
-        if( irheol(iph).eq.3 .or. irheol(iph).ge.11 ) ivis_present = 1
-    end do
-end do
+call check_visc_rheol
 
 ! Plastic strain
 open (1,file='aps.rs',access='direct',recl=nwords*kindr) 

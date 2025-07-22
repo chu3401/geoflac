@@ -25,7 +25,7 @@ enddo
 !$OMP end parallel
 
 ! Diffuse topography
-if( topo_k.gt.0.d0) call diff_topo
+if( topo_kappa.gt.0.d0) call diff_topo
 
 
 !$OMP parallel private(i,j,x1,y1,x2,y2,x3,y3,x4,y4, &
@@ -126,20 +126,20 @@ do  i = 1,nx-1
         stress0(j,i,3,4) = s12 + dw12*(s22-s11)
 
         if (any(area(j,i,:) <= 0)) then
-            ! write(333, *) 'area', j, i, nloop
-            ! write(333, *) area(j,i,:)
-            ! write(333, *) 'cord:'
-            ! write(333, *) cord(j  ,i  ,:)
-            ! write(333, *) cord(j  ,i+1,:)
-            ! write(333, *) cord(j+1,i  ,:)
-            ! write(333, *) cord(j+1,i+1,:)
-            ! write(333, *) 'vel:'
-            ! write(333, *) vel(j  ,i  ,:)
-            ! write(333, *) vel(j  ,i+1,:)
-            ! write(333, *) vel(j+1,i  ,:)
-            ! write(333, *) vel(j+1,i+1,:)
-            ! flush(333)
-            ! call SysMsg('Negative area!')
+            write(333, *) 'area', j, i, nloop
+            write(333, *) area(j,i,:)
+            write(333, *) 'cord:'
+            write(333, *) cord(j  ,i  ,:)
+            write(333, *) cord(j  ,i+1,:)
+            write(333, *) cord(j+1,i  ,:)
+            write(333, *) cord(j+1,i+1,:)
+            write(333, *) 'vel:'
+            write(333, *) vel(j  ,i  ,:)
+            write(333, *) vel(j  ,i+1,:)
+            write(333, *) vel(j+1,i  ,:)
+            write(333, *) vel(j+1,i+1,:)
+            flush(333)
+            call SysMsg('Negative area!')
             stop 40
         endif
     enddo
@@ -161,19 +161,26 @@ use phases
 include 'precision.inc'
 
 !EROSION PROCESSES
-if( topo_k .gt. 0.d0 ) then
+if( topo_kappa .gt. 0.d0 ) then
 
     !$ACC parallel loop async(2)
     do i = 1, nx
-        stmpn(i) = topo_k ! elevation-dep. topo diffusivity
+        stmpn(i) = topo_kappa ! elevation-dep. topo diffusivity
     enddo
 
-    cctopomean = 0
-    !$ACC parallel loop reduction(+:cctopomean) async(1)
-    do i = 1, int(cc_max)
-        cctopomean = cctopomean + cord(1,i,2) / cc_max
+    topomean = 0
+    !$ACC parallel loop reduction(+:topomean) async(1)
+    do i = 1, nx
+        topomean = topomean + cord(1,i,2) / nx
     enddo
-    cctopomean=cctopomean-(us*1e3)
+
+    !$ACC wait(2)
+
+    ! !$ACC parallel loop async(1)
+    ! do i = 1, nx-1
+    !     ! higher erosion for sediments above mean topo
+    !     if (iphase(1,i) == ksed2 .and. cord(1,i,2) > topomean) stmpn(i) = stmpn(i) * 10
+    ! enddo
 
 
     !$ACC parallel loop async(1)
@@ -182,15 +189,9 @@ if( topo_k .gt. 0.d0 ) then
         snder = ( stmpn(i+1)*(cord(1,i+1,2)-cord(1,i  ,2))/(cord(1,i+1,1)-cord(1,i  ,1)) - &
             stmpn(i-1)*(cord(1,i  ,2)-cord(1,i-1,2))/(cord(1,i  ,1)-cord(1,i-1,1)) ) / &
             (cord(1,i+1,1)-cord(1,i-1,1))
-        if (snder .gt. 0.d0) then
-            snder = snder * fac_k
-        endif
-        if (snder .lt. 0.d0) then
-            iph=iphase(1,i)
+        if (snder < 0) then
+            iph = iphase(1,i)
             snder = snder * fk(iph)
-        endif
-        if (cord(1,i,2) .lt. cctopomean .and. snder .lt. 0) then
-            snder = snder * undersea_k
         endif
         dtopo(i) = dt * snder
     end do
@@ -244,7 +245,7 @@ if (arc_extrusion_rate > 0) then
 endif
 
 ! adjust markers
-if (topo_k > 0 .or. arc_extrusion_rate > 0) then
+if (topo_kappa > 0 .or. arc_extrusion_rate > 0) then
     if(mod(nloop, ifreq_avgsr) .eq. 0) then
 !!$        print *, 'max sed/erosion rate (m/yr):' &
 !!$             , maxval(dtopo(1:nx)) * 3.16d7 / dt &

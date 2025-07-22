@@ -35,6 +35,7 @@ do i = 1,inhom
     if (igeom (i) .eq.3) then
         do j = ix1(i),ix2(i)
             k = nint(float(iy2(i)-iy1(i))/float(ix2(i)-ix1(i))*(j-ix1(i))) + iy1(i)
+            aps(k,j)=xinitaps(i)
             if( inphase(i) > 0) iphase(k,j) = inphase(i)
         end do
     endif
@@ -50,6 +51,14 @@ do i = 1,inhom
     endif
 end do
 
+return
+end
+
+
+subroutine check_visc_rheol
+use arrays
+use params
+
 ! Check if viscous rheology present
 ivis_present = 0
 do i = 1,nx-1
@@ -58,7 +67,6 @@ do i = 1,nx-1
         if( irheol(iph).eq.3 .or. irheol(iph).ge.11 ) ivis_present = 1
     end do
 end do
-    
 
 return
 end
