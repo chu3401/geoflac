@@ -17,19 +17,22 @@
 0, points.xy    ircoord, coordfile: read init. coordinates from the file
 ;
 ; X direction
-3     Number zones X-direction (0 - regular grid)
-; nelem per zone    size(non-dimen, must sum to 1.0)
- 45  0.375
-120  0.5
- 20  0.125
+5     Number zones X-direction (0 for regular grid, or odd#)
+; nelem_per_zone    size (relative)
+ 25  6
+ 10  0
+120  1
+ 10  0
+ 20  6
 ;
 ; Z direction
-4                Number zones Z-direction (0 - regular grid)
-; nelem per zone    size(non-dimen, must sum to 1.0)
- 5  0.025
- 9  0.075
-30  0.4
-20  0.5
+5                Number zones Z-direction (0 for regular grid, or odd#)
+; nelem_per_zone    size (relative)
+ 5   1
+ 5   0
+30   3
+ 9   0
+15   6
 ; 
 ;===================================================================
 ;        C o n d i t i o n s:  M e c h a n i c a l
@@ -38,7 +41,7 @@
 ; Stress boundary conditions (0:no,1:yes), lithostatic stress bc on the sides (0/1)
 0  0 
 ; nofbc: Number of boundary conditions
-2
+3
 ;----------------------------------------------------------------
 ;nofside       1-left,2-bottom,3-right,4-top,5-mid-plate
 ;nbc1,nbc2     range of application of boundary condition
@@ -48,6 +51,7 @@
 ;  10 - velx            01 - velz
 ;  20 - normal stress   02 - shear stress (x,z) plane
 ;  30 - vely                (strike slip version)
+;  90 - temperature (fixed temperature on left or right side)
 ;----------------------------------------------------------------
 ;  Function of boundary conditions:
 ;------------------------------------------------------------------
@@ -57,8 +61,9 @@
 ;where x is undimensional. i.e. x = (x - x(na1)) / (x(na2) - x(na1))
 ;-------------------------------------------------------------------------------
 ;nofside  nbc1 nbc2  nbc   a       b    c     d     e     f      g     h     i 
-1         1    65    10   1.56e-9  0.   0.    0.    0.    0.     0.    0.    0.
+1         1    65    10   1.56e-8  0.   0.    0.    0.    0.     0.    0.    0.
 3         1    65    10   0.e-10   0.   0.    0.    0.    0.     0.    0.    0.
+1         1    65    90   0.e-10   0.   0.    0.    0.    0.     0.    0.    0.
 ;
 ; Hydrostatic pressure  applied at the bottom (on the depth of rzbo and TOP!!)
 ; {y,n(1,0),auto(2)}, Pressure at compens.depth, substratum phase, addit. dens. diff, damp_vis
@@ -89,7 +94,7 @@ proftemp.dat   temperature profile dat.file
 ; Initial varying thermal age crust and mantle accross the box (see doc/input_description.md for the meaning of parameters)
 5              - nzone_age (number of zones of different age max 20)
 ;ictherm, age (Myr.), tp1, tp2, nph_layer (N), x nodes 1 and 2
-;    layer depth #1 (km), #2, ..., #N-1
+;    nph_layer (N), layer depth #1 (km), #2, ..., #N-1
 ;    layer phase #1, #2, ..., #N
  1,100.,  0,  0,  1, 58
     4,  1.5, 7.5, 17.5
@@ -162,7 +167,6 @@ phasedat.inp   ; file with distribution of phase on the 2D grid (phasedat)
 ;
 ; Weak zone geometries:
 ; 0- rectangular,
-; 1,2- Gauss shape
 ; 3- diagonal line
 ; 4- diagonal line plus init.plastic strain
 ;
@@ -212,7 +216,7 @@ phasedat.inp   ; file with distribution of phase on the 2D grid (phasedat)
 ;=================================================================
 ;                       R e m e s h i n g
 ;=================================================================
-;ny_rem (0,1), mode_rem(1, 3 or 11),  ntest_rem,  angle_rem(degrees,when magmainj le 10)
+;ny_rem (0,1), mode_rem(1, 3, 4 or 11),  ntest_rem,  angle_rem(degrees,when magmainj le 10)
 1            3               500         5.
 ;
 ; dx_rem (if mode_rem=11 defines critical shortening for remeshing in dx-units)
@@ -244,13 +248,13 @@ phasedat.inp   ; file with distribution of phase on the 2D grid (phasedat)
 ; Time parameters below are in thousands years
 ;
 ; Max time of calculations (in Kyr)
-24001  ;  24 Myrs
+501  ;  0.5 Myrs
 ;
 ; Time interval for screen output of calc. progress (in Kyr)
-200
+10
 ;
 ; Time interval for file output (in Kyr)
-200
+10
 ;
 ; Variables to print
 ; vel srII eII aps sII sxx szz sxz pres temp phase visc unused dens src diss forc hfl topo
@@ -264,4 +268,3 @@ phasedat.inp   ; file with distribution of phase on the 2D grid (phasedat)
 ;
 ; saving the last step only (1) or each nsave step (0)
 1
-
