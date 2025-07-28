@@ -92,7 +92,10 @@ subroutine init_bc
                   xa = 0.5d0 * (x+xn)
                   call stressbc (i,nnop,numbp,numbp1,xa)  
               endif
-
+              
+              if (nbc(i).eq.90) then
+                  call tempbc(i,numbp)
+              endif
               if ((nbc(i).eq.1.or.nbc(i).eq.10).and.bca(i).gt.0) then
                   incoming_left = 1
               endif
@@ -148,6 +151,10 @@ subroutine init_bc
                   call stressbc (i,nnop,numbp,numbp1,xa)
               endif
 
+              if (nbc(i).eq.90) then
+                  call tempbc(i,numbp)
+              endif
+              
               if ((nbc(i).eq.1.or.nbc(i).eq.10).and.bca(i).lt.0) then
                   incoming_right = 1
               endif
@@ -408,9 +415,30 @@ subroutine vbcal
   return
 end subroutine vbcal
 
+!
+!fixed boundary temperature
+!
+subroutine tempbc(i,numbp)
 
+  use arrays
+  use params
+  implicit none
+  integer :: i, numbp
+  integer :: ii1, jj1
+  
+  if (nofside(i) .eq. 1) then
+      ii1 = 1
+      jj1 = numbp
+  endif
+  if (nofside(i) .eq. 3) then
+      ii1 = nx
+      jj1 = numbp
+  endif
 
-
+  bc(jj1,ii1,3) = temp(jj1,ii1)
+  ncod(jj1,ii1,3) = 1
+       
+end subroutine tempbc
 
 
 

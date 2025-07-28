@@ -51,9 +51,9 @@ contains
     allocate(area(nz-1, nx-1, ntri))
     allocate(dvol(nz-1, nx-1, ntri))
     allocate(strain(nz-1, nx-1, 3))
-    allocate(bc(nz, nx, 2))
+    allocate(bc(nz, nx, 3))
 
-    allocate(ncod(nz, nx, 2))
+    allocate(ncod(nz, nx, 3))
     allocate(iphase(nz-1, nx-1))
     allocate(nopbou(((nz-1)+(nx-1))*2, 4))
     allocate(ncodbou(((nz-1)+(nx-1))*2, 3))

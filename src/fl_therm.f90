@@ -314,6 +314,18 @@ do i = 1,nx
 end do
 !$OMP end do
 
+! Boundary conditions (left and right)
+!$ACC parallel loop collapse(2) async(1)
+!$OMP do
+do i=1,nx
+    do j=1,nz
+        if( ncod(j,i,3) .eq. 1 ) then
+            temp(j,i) = bc(j,i,3)
+         endif
+    enddo
+enddo
+!$OMP end do
+
 ! Boundary conditions (top and bottom)
 !$ACC parallel loop async(1)
 !$OMP do
