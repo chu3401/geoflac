@@ -88,9 +88,11 @@ if (itype_melting == 1) then
             !$OMP atomic update
             !$ACC atomic update
             temp(j+1,i+1) = temp(j+1,i+1) + deltaT
-        end do
+        enddo
     enddo
     !$OMP end do
+     
+    temp = min(temp, t_bot)
 
     !$OMP do
     !$ACC parallel loop collapse(2) async(1)
