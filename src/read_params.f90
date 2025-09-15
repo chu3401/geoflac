@@ -107,6 +107,9 @@ call AdvanceToNextInputLine(4, line)
 read(4,*,err=1000) i_prestress
 line = line + 1
 call AdvanceToNextInputLine(4, line)
+read(4,*,err=1000) extra_pres
+line = line + 1
+call AdvanceToNextInputLine(4, line)
 read(4,*,err=1000) itherm
 line = line + 1
 call AdvanceToNextInputLine(4, line)
