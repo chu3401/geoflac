@@ -34,7 +34,7 @@ function Eff_dens( j, i)
       frac = (deptmpr660 - zcord) / (deptmpr660 - deptmpr670)
       if (frac < 0.d0) frac=0.d0
       if (frac > 1.d0) frac=1.d0
-      den_amp=1.05d0 + 0.05d0 * frac
+      den_amp=1.05d0 + 0.085d0 * frac
   endif
 
   press = 0
