@@ -26,7 +26,7 @@ real*8, parameter :: max_melting_depth = 200.d3
 real*8, parameter :: serpentine_temp = 550.d0
 
 ! max. depth (m) to check MOR basalt
-real*8, parameter :: check_depth = 50.d3
+real*8, parameter :: check_depth = 30.d3
 real*8, parameter :: new_crust_thickness = 7.d3
 real*8, parameter :: mor_temp = 1250.d0
 
