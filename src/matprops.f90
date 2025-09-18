@@ -150,10 +150,10 @@ if (zcord < deptmpr660) then
     Eff_visc = 1d22 * exp( -0.0115d0 * (tmpr - t_bot))
     Eff_visc = min(v_max, max(v_min, Eff_visc))
     return
-elseif (zcord < deptmpr410) then
-    Eff_visc = 1d21 * exp( -0.0115d0 * (tmpr - t_bot))
-    Eff_visc = min(v_max, max(v_min, Eff_visc))
-    return
+!elseif (zcord < deptmpr410) then
+!    Eff_visc = 1d21 * exp( -0.0115d0 * (tmpr - t_bot))
+!    Eff_visc = min(v_max, max(v_min, Eff_visc))
+!    return
 endif
 
 srat = e2sr(j,i)
