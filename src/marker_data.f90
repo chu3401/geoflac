@@ -2,7 +2,7 @@ MODULE marker_data
   integer :: max_markers
 
   !!! maximum number of ELEMENTS !!!
-  integer, parameter :: max_markers_per_elem=32
+  integer, parameter :: max_markers_per_elem=128
 
   SAVE
   double precision, allocatable :: mark_a1(:), mark_a2(:) ! baricentric coordinates
