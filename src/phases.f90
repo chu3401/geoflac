@@ -23,7 +23,7 @@ integer, parameter :: kdrymant = 18
 integer, parameter :: kocean3 = 19
 integer, parameter :: kamphi = 20
 integer, parameter, dimension(4) :: mantle_phases = (/kmant1, kmant2, kserp, khydmant/)
-integer, parameter, dimension(3) :: mantle_phases2 = (/kmant1, kmant2, khydmant/)
+integer, parameter, dimension(4) :: mantle_phases2 = (/kmant1, kmant2, khydmant,kdrymant/)
 integer, parameter, dimension(5) :: sed_phases = (/kschist, ksed1, ksed2, karc1, kmetased/)
 
 end module phases
