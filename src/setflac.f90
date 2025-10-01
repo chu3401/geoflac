@@ -116,7 +116,7 @@ include 'precision.inc'
 !$ACC     dt_elastic,demf, &
 !$ACC     dtout_screen,dtout_file,dtsave_file, &
 !$ACC     visc(maxph),den(maxph),alfa(maxph),beta(maxph),pln(maxph), &
-!$ACC     acoef(maxph),eactiv(maxph),rl(maxph),rm(maxph), &
+!$ACC     acoef(maxph),eactiv(maxph),vactiv(maxph),rl(maxph),rm(maxph), &
 !$ACC     plstrain1(maxph),plstrain2(maxph),fric1(maxph),fric2(maxph), &
 !$ACC     cohesion1(maxph),cohesion2(maxph), &
 !$ACC     dilat1(maxph),dilat2(maxph), &

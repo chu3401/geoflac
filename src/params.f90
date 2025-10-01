@@ -72,7 +72,7 @@ real*8 :: x0,z0,rxbo,rzbo,sizez_x(maxzone),sizez_y(maxzone), &
      dt_elastic,demf, &
      dtout_screen,dtout_file,dtsave_file, &
      visc(maxph),den(maxph),alfa(maxph),beta(maxph),pln(maxph), &
-     acoef(maxph),eactiv(maxph),rl(maxph),rm(maxph), &
+     acoef(maxph),eactiv(maxph),vactiv(maxph),rl(maxph),rm(maxph), &
      plstrain1(maxph),plstrain2(maxph),fric1(maxph),fric2(maxph), &
      cohesion1(maxph),cohesion2(maxph), &
      dilat1(maxph),dilat2(maxph), &
@@ -101,7 +101,7 @@ real*8 :: x0,z0,rxbo,rzbo,sizez_x(maxzone),sizez_y(maxzone), &
 !$ACC     dt_elastic,demf, &
 !$ACC     dtout_screen,dtout_file,dtsave_file, &
 !$ACC     visc(maxph),den(maxph),alfa(maxph),beta(maxph),pln(maxph), &
-!$ACC     acoef(maxph),eactiv(maxph),rl(maxph),rm(maxph), &
+!$ACC     acoef(maxph),eactiv(maxph),vactiv(maxph),rl(maxph),rm(maxph), &
 !$ACC     plstrain1(maxph),plstrain2(maxph),fric1(maxph),fric2(maxph), &
 !$ACC     cohesion1(maxph),cohesion2(maxph), &
 !$ACC     dilat1(maxph),dilat2(maxph), &
