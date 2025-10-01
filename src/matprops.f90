@@ -162,7 +162,6 @@ s22 = 0.25d0 * (stress0(j,i,2,1)+stress0(j,i,2,2)+stress0(j,i,2,3)+stress0(j,i,2
 s33 = 0.25d0 * (stress0(j,i,4,1)+stress0(j,i,4,2)+stress0(j,i,4,3)+stress0(j,i,4,4))
 pres = -1*(s11+s22+s33)/3d0
 
-
 ! Phase diagram taken from The Solid Earth by C.M.R.Fowler, 2nd edition
 ! Fixed points (996.031431 K, 318.012214 km) (2338.655701 K, 454.304204 km)
 deptmpr410 = -101.58d0*(tmpr+273.d0)-216828.d0
