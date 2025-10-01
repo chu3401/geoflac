@@ -20,5 +20,7 @@ integer, parameter :: kweakmc = 15
 integer, parameter :: khydmant = 16
 integer, parameter :: kmetased = 17
 integer, parameter, dimension(4) :: mantle_phases = (/kmant1, kmant2, kserp, khydmant/)
+integer, parameter, dimension(4) :: mantle_phases2 = (/kmant1, kmant2, khydmant,kdrymant/)
+integer, parameter, dimension(5) :: sed_phases = (/kschist, ksed1, ksed2, karc1, kmetased/)
 
 end module phases
