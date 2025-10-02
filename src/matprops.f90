@@ -59,7 +59,7 @@ function Eff_dens( j, i)
 
     Eff_dens = Eff_dens + ratio*dens
   enddo
-  if (any(iph == mantle_phases)) then
+  if (any(iph == mantle_phases2)) then
       Eff_dens = Eff_dens * den_amp    
   endif
   Eff_dens = Eff_dens - fmagma(j,i) * (Eff_dens - rho_magma)
