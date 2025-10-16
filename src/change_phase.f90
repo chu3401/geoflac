@@ -54,7 +54,7 @@ jocmoho = min(max(2, j), nz-1)
 do i = 1, nx-1
   iph = iphase(jj,i)
   tmpr = 0.25d0*(temp(jj,i)+temp(jj+1,i)+temp(jj,i+1)+temp(jj+1,i+1))
-  if (any(iph == mantle_phases2) .and. tmpr > mor_temp) then
+  if (any(iph == mantle_phases) .and. tmpr > mor_temp) then
     call newphase2marker(1,jocmoho,i,i,kocean1)
   end if
 end do
