@@ -158,6 +158,7 @@ subroutine diff_topo
 use arrays
 use params
 use phases
+use marker_data
 include 'precision.inc'
 
 !EROSION PROCESSES
@@ -243,6 +244,42 @@ if (arc_extrusion_rate > 0) then
         cord(1,i+1,2) = cord(1,i+1,2) + extrusion(i)
     enddo
 endif
+
+! MOR test
+!$ACC parallel loop async(1)
+do i = 2, nx-2
+    total_melt = 0
+    !$ACC loop reduction(+:total_melt)
+    do j = 1, nz-1
+        quad_area = 0.5d0/area(j,i,1) + 0.5d0/area(j,i,2)
+        total_melt = total_melt + quad_area * fmagma2(j,i)
+    enddo
+    extrusion_height = dt * total_melt * prod_magma2 / (cord(1,i+1,1) - cord(1,i,1))
+    ele_height = 0
+    do j = 1, nz-1
+        ele_height = ele_height + abs(0.5d0 * (cord(j+1,i+1,2)+cord(j+1,i,2)) - 0.5d0 * (cord(j,i+1,2)+cord(j,i,2)))
+        quotient = extrusion_height / ele_height
+        remainder = mod(extrusion_height, ele_height)
+        if (quotient >= 0.d0 .and. quotient < 2.d0) then
+            j_oc = j
+            exit
+        else
+            cycle
+        endif
+    enddo
+    do j = 1, nz-1
+        iph = iphase(j,i)
+        if (iph /= kocean1 .and. quotient >= 1) then
+            call newphase2marker(j,j+j_oc-1,i,i,kocean1)
+            exit
+        endif
+    enddo
+    extr_acc(i) = extr_acc(i) + remainder/2
+    !$ACC atomic update
+    cord(1,i,2) = cord(1,i,2) + remainder/2
+    !$ACC atomic update
+    cord(1,i+1,2) = cord(1,i+1,2) + remainder/2
+enddo
 
 ! adjust markers
 if (topo_kappa > 0 .or. arc_extrusion_rate > 0) then
@@ -350,16 +387,16 @@ subroutine resurface
             dz_ratio = min(chgtopo2 / elz, 1.0d0)
             !write(6,*) 'arc', i, chgtopo2, elz, n_to_add, dz_ratio
             do ii = 1, n_to_add
-                call add_marker_at_top(i, dz_ratio, time, nloop+i+ii, karc1)
+                call add_marker_at_top(i, dz_ratio, time, nloop+i+ii, kocean1)
             enddo
 
             extr_acc(i) = 0
             ichanged = 1
       endif
-
+      
       if (ichanged == 1) then
             ! recalculate phase ratio
-            call count_phase_ratio(1,i)
+            call count_phase_ratio(1,i) 
       endif
   end do
   !$ACC end serial

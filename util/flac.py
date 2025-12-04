@@ -240,6 +240,16 @@ class Flac(object):
         return fmelt
 
 
+    def read_fmelt2(self, frame):
+        columns = 1
+        f = open('fmelt2.0')
+        offset = (frame-1) * columns * self.nelements * sizeoffloat
+        f.seek(offset)
+        fmelt2 = self._read_data(f, columns, count=self.nelements)
+        self._reshape_elemental_fields(fmelt2)
+        return fmelt2
+
+
     def read_fmagma(self, frame):
         columns = 1
         f = open('fmagma.0')
@@ -248,6 +258,16 @@ class Flac(object):
         fmagma = self._read_data(f, columns, count=self.nelements)
         self._reshape_elemental_fields(fmagma)
         return fmagma
+
+    
+    def read_fmagma2(self, frame):
+        columns = 1
+        f = open('fmagma2.0')
+        offset = (frame-1) * columns * self.nelements * sizeoffloat
+        f.seek(offset)
+        fmagma2 = self._read_data(f, columns, count=self.nelements)
+        self._reshape_elemental_fields(fmagma2)
+        return fmagma2
 
 
     def read_diss(self, frame):
@@ -636,12 +656,28 @@ class FlacFromVTK(object):
         return fmelt.transpose()
 
 
+    def read_fmelt2(self, frame):
+        data = self._get_vtk_data(frame)
+        a = self._locate_line(data, "Melt fraction")
+        fmelt2 = np.frombuffer(a, dtype=np.float32)
+        fmelt2.shape = (self.nx-1, self.nz-1)
+        return fmelt2.transpose()
+
+
     def read_fmagma(self, frame):
         data = self._get_vtk_data(frame)
         a = self._locate_line(data, "Magma fraction")
         fmagma = np.frombuffer(a, dtype=np.float32)
         fmagma.shape = (self.nx-1, self.nz-1)
         return fmagma.transpose()
+
+
+    def read_fmagma2(self, frame):
+        data = self._get_vtk_data(frame)
+        a = self._locate_line(data, "Magma fraction2")
+        fmagma2 = np.frombuffer(a, dtype=np.float32)
+        fmagma2.shape = (self.nx-1, self.nz-1)
+        return fmagma2.transpose()
 
 
     def read_diss(self, frame):

@@ -292,10 +292,10 @@ enddo
 
 phi = 1 / phi
 coh = 1 / coh
-
+fma = min(fmagma(j,i)+fmagma2(j,i),fmagma_max)
 if (itype_melting == 1) then
-    phi = phi * (1 - (1 - weaken_ratio_plastic) * fmagma(j,i) / fmagma_max)
-    coh = coh * (1 - (1 - weaken_ratio_plastic) * fmagma(j,i) / fmagma_max)
+    phi = phi * (1 - (1 - weaken_ratio_plastic) * fma / fmagma_max)
+    coh = coh * (1 - (1 - weaken_ratio_plastic) * fma / fmagma_max)
 endif
 
 return

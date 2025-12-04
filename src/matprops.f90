@@ -74,7 +74,8 @@ function Eff_dens( j, i)
   if (any(iph == mantle_phases)) then
       Eff_dens = Eff_dens * den_amp    
   endif
-  Eff_dens = Eff_dens - fmagma(j,i) * (Eff_dens - rho_magma)
+  fma = min(fmagma(j,i)+fmagma2(j,i),fmagma_max)
+  Eff_dens = Eff_dens - fma * (Eff_dens - rho_magma)
   return
 end function Eff_dens
 
@@ -198,7 +199,8 @@ do k = 1, nphase
 enddo
 
 Eff_visc = 1 / Eff_visc
-if (itype_melting == 1) Eff_visc = Eff_visc * exp(weaken_ratio_viscous * fmagma(j,i) / fmagma_max)
+fma = min(fmagma(j,i)+fmagma2(j,i),fmagma_max)
+if (itype_melting == 1) Eff_visc = Eff_visc * exp(weaken_ratio_viscous * fma / fmagma_max)
 
 ! Final cut-off
 Eff_visc = min(v_max, max(v_min, Eff_visc))
